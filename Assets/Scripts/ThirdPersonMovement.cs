@@ -6,6 +6,9 @@ public class ThirdPersonMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] Vector3 playerVelocity;
+    public float _forward;
+    public bool _isMoving=false;
+
     [Header("Dash Variables")]
     [SerializeField] float dashDistance = 10f;
     [SerializeField] float dashDuration = 0.2f;
@@ -66,7 +69,8 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-
+        //_forward = horizontal;
+        
         Vector3 moveDirection = new Vector3(horizontal, 0f, vertical);
         moveDirection = Camera.main.transform.TransformDirection(moveDirection);
         moveDirection.y = 0f;
@@ -77,7 +81,7 @@ public class ThirdPersonMovement : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 180f);
         }
-
+        _forward = moveDirection.magnitude;
         controller.Move(moveDirection * moveSpeed * Time.fixedDeltaTime);
     }
     #endregion

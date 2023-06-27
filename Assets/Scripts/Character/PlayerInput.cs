@@ -21,6 +21,8 @@ public class PlayerInput : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(tpm_movement._forward > 0) tpm_movement._isMoving = true;
+        else tpm_movement._isMoving = false;
         tpm_movement.MovePlayer();
     }
 }
