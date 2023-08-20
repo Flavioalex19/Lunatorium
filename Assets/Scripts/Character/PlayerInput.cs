@@ -8,12 +8,21 @@ public class PlayerInput : MonoBehaviour
     bool _canInteract = false;
     bool _isInteracting = false;
 
-   
+    public bool _isInCombat = false;
+
+    Stats _stats;
+    Weapon _weapon;
+    Inventory _inventory;
+    FpsMovement _fpsMovement;
 
     // Start is called before the first frame update
     void Start()
     {
         //tpm_movement = GetComponent<ThirdPersonMovement>();
+        _stats = GetComponent<Stats>();
+        _inventory = GetComponent<Inventory>();
+        _weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
+        _fpsMovement = GetComponent<FpsMovement>();
     }
 
     // Update is called once per frame
@@ -26,6 +35,22 @@ public class PlayerInput : MonoBehaviour
 
                 _isInteracting = true;
             }
+        }
+        if(_isInCombat && Input.GetKeyDown(KeyCode.Space))
+        {
+            _fpsMovement.StartDash();
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse0) && _isInCombat)
+        {
+            _weapon.FireEnergy(_stats);
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _inventory.NextPowerOrb(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _inventory.NextPowerOrb(1);
         }
     }
 

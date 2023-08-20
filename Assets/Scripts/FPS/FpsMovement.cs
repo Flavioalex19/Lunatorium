@@ -10,10 +10,19 @@ public class FpsMovement : MonoBehaviour
     private float verticalRotation = 0f;
     private float verticalVelocity = 0f;
     float forwardSpeed;
+
+    #region Dash
+    [Header("Dash Variables")]
+    [SerializeField] float _dashDuration = 0.5f;
+    [SerializeField] float _dashSpeed = 10f;
+    private float _dashTimer = 0f;
+    private bool _isDashing = false;
+    #endregion
+
     private CharacterController characterController;
 
     UiManager uiManager;
-    [SerializeField]CameraShake cameraShake;
+    //[SerializeField]CameraShake cameraShake;
 
     private void Start()
     {
@@ -46,18 +55,47 @@ public class FpsMovement : MonoBehaviour
             verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             verticalRotation = Mathf.Clamp(verticalRotation, -60f, 60f);
             Camera.main.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
-            // Movement (Keyboard)
-            forwardSpeed = Input.GetAxis("Vertical") * movementSpeed;
-            float sideSpeed = Input.GetAxis("Horizontal") * movementSpeed;
+            //Dash
+            if (_isDashing)
+            {
+                _dashTimer -= Time.deltaTime;
+                if (_dashTimer > 0)
+                {
+                    Vector3 dashDirection = (transform.forward * Input.GetAxis("Vertical") + transform.right * Input.GetAxis("Horizontal")).normalized * _dashSpeed;
+                    characterController.Move(dashDirection * Time.deltaTime);
+                }
+                else
+                {
+                    _isDashing = false;
+                }
+            }
+            else
+            {
+                // Movement (Keyboard)
+                forwardSpeed = Input.GetAxis("Vertical") * movementSpeed;
+                float sideSpeed = Input.GetAxis("Horizontal") * movementSpeed;
 
-            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+                verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
-            Vector3 speed = new Vector3(sideSpeed, verticalVelocity, forwardSpeed);
-            speed = transform.rotation * speed;
+                Vector3 speed = new Vector3(sideSpeed, verticalVelocity, forwardSpeed);
+                speed = transform.rotation * speed;
 
-            characterController.Move(speed * Time.deltaTime);
+                characterController.Move(speed * Time.deltaTime);
+            }
+
+            
         }
         
         
     }
+    public void StartDash()
+    {
+        if (!_isDashing)
+        {
+            _isDashing = true;
+            _dashTimer = _dashDuration;
+            verticalVelocity = 0f; // Reset vertical velocity before the dash
+        }
+    }
+
 }

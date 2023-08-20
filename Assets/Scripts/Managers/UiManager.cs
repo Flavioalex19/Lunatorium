@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
+    Stats cc_Stats_Player;
+
     #region Letter Variables
     #region Letters Texts
     [SerializeField]TextMeshProUGUI _text_DanteLetter;
@@ -17,13 +19,20 @@ public class UiManager : MonoBehaviour
     [SerializeField] bool _IsJoshuaLetterDisplayOn = false;
     #region Buttons
     [SerializeField]Button btn_closeLetterDante;
-    [SerializeField] Button btn_closeLetterJoshua;
+    [SerializeField]Button btn_closeLetterJoshua;
+    #endregion
+    #region UI Player
+    [SerializeField] Animator _anim_mindBar;
+    [SerializeField] Image _ui_mindBar;
+    bool _isMindBarActive = false;
     #endregion
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        cc_Stats_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Stats>();
+
         btn_closeLetterDante.onClick.AddListener(() => SetIsDanteLetterDisplayOn(false));
         btn_closeLetterJoshua.onClick.AddListener(() => SetIsJoshuaLetterDisplayOn(false));
     }
@@ -33,6 +42,9 @@ public class UiManager : MonoBehaviour
     {
         animator_ui_letter_Dante.SetBool("isOn", _IsDanteLetterDisplayOn);
         animator_ui_letter_Joshua.SetBool("isOn", _IsJoshuaLetterDisplayOn);
+        _anim_mindBar.SetBool("isOn", _isMindBarActive);
+
+        _ui_mindBar.fillAmount = cc_Stats_Player.GetCurrentMind() / cc_Stats_Player.GetMind();
     }
     #region Get & Set
     public bool GetIsDanteLetterDisplayOn()
@@ -58,6 +70,15 @@ public class UiManager : MonoBehaviour
     public void SetJoshuaText(string text)
     {
         _text_JoshuaLetter.text = text;
+    }
+
+    public bool GetisMindBarActive()
+    {
+        return _isMindBarActive;
+    }
+    public void SetIsMindBarActive(bool isMindBarActive)
+    {
+        _isMindBarActive=isMindBarActive;
     }
     #endregion
     

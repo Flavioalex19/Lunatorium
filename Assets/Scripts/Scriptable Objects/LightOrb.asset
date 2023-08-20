@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882f1ef30b34ae646938b21ea5f0a5f5, type: 3}
+  m_Name: LightOrb
+  m_EditorClassIdentifier: 
+  ProjectilePrefab: {fileID: 239611682657677027, guid: d22e7466efc98ba49aba25138cc4b470,
+    type: 3}
+  Damage: 20
+  CastingCost: 0.5
+  ResetCoolDown: 10
+  Cooldown: 10
+  ProjectileSpeed: 100
+  IsARecoveringPower: 0
+  IsOnCooldown: 0
+  IsActive: 0
